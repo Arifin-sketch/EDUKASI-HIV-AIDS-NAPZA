@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Info HIV/AIDS & NAPZA — Cegah, Edukasi, Dukung</title>
+  <meta name="description" content="Situs edukasi tentang HIV/AIDS dan penyalahgunaan NAPZA. Informasi, pencegahan, dan dukungan." />
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --panel:#111;
+      --accent:#e11b22; /* merah menyala */
+      --muted:#a6a6a6;
+      --glass: rgba(255,255,255,0.03);
+      --max-width:1100px;
+      --radius:12px;
+      --shadow: 0 6px 20px rgba(0,0,0,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(225,27,34,0.06), transparent),
+                  radial-gradient(1000px 400px at 90% 90%, rgba(225,27,34,0.04), transparent),
+                  var(--bg);
+      color:#eee;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      padding:32px 16px;
+    }
+
+    .container{max-width:var(--max-width);margin:0 auto}
+
+    /* NAV */
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:46px;height:46px;display:grid;place-items:center;border-radius:10px;background:linear-gradient(135deg,var(--panel),#1a0b0b);box-shadow:var(--shadow)}
+    .logo svg{width:34px;height:34px}
+    nav a{color:var(--muted);text-decoration:none;margin-left:18px}
+    nav a:hover{color:var(--accent)}
+
+    /* HERO */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-bottom:28px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:28px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .hero h1{margin:0 0 8px;font-size:28px}
+    .hero p.lead{margin:0;color:var(--muted)}
+
+    /* Animated ribbon */
+    .ribbon{display:inline-block;padding:6px 12px;border-radius:999px;background:linear-gradient(90deg,var(--accent),#ff6b6b);font-weight:600;color:#100;box-shadow:0 6px 18px rgba(225,27,34,0.18)}
+
+    /* quick stats */
+    .stats{display:flex;gap:12px;margin-top:18px}
+    .stat{flex:1;padding:14px;background:var(--glass);border-radius:10px;text-align:center}
+    .stat h3{margin:0;font-size:20px}
+    .stat p{margin:6px 0 0;color:var(--muted);font-size:13px}
+
+    /* right column: animated card */
+    .blood-card{position:relative;height:380px;overflow:hidden}
+    .blood-card .pulse{position:absolute;inset:0;display:grid;place-items:center}
+    .blood{width:180px;height:180px;border-radius:50%;background:linear-gradient(180deg,var(--accent),#a70f12);box-shadow:0 12px 44px rgba(225,27,34,0.24);display:grid;place-items:center;font-weight:700;font-size:60px}
+    .blood small{display:block;font-size:12px;color:rgba(0,0,0,0.35);font-weight:700}
+
+    /* sections */
+    section{margin-bottom:20px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .grid-2{grid-template-columns:1fr 360px}
+
+    /* cards inside */
+    .info-card{padding:18px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);min-height:140px}
+    .info-card h4{margin:0 0 8px}
+    .info-card p{margin:0;color:var(--muted);font-size:14px}
+
+    /* CTA footer */
+    footer{margin-top:28px;padding:18px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);display:flex;justify-content:space-between;align-items:center}
+
+    /* small screens */
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .grid-2{grid-template-columns:1fr}
+      .blood-card{height:240px}
+    }
+
+    /* Animations */
+    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-10px)}100%{transform:translateY(0)}}
+    .pulse .blood{animation:floaty 3s ease-in-out infinite}
+
+    /* progress bars */
+    .progress{height:10px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden}
+    .progress > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),#ff6b6b);border-radius:999px;transition:width 1.2s cubic-bezier(.2,.9,.2,1)}
+
+    /* subtle floating particles */
+    .particles{position:fixed;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:0.08}
+    .particle{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--accent);filter:blur(6px);animation:drift 18s linear infinite}
+    @keyframes drift{0%{transform:translateY(-10vh) translateX(0) scale(0.6);opacity:0}10%{opacity:1}50%{opacity:0.6}100%{transform:translateY(110vh) translateX(200px) scale(1.2);opacity:0}}
+
+    /* reveal on scroll */
+    .reveal{opacity:0;transform:translateY(12px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:none}
+
+    /* accessibility focus */
+    a:focus{outline:3px dashed rgba(225,27,34,0.35);outline-offset:6px}
+
+  </style>
+</head>
+<body>
+  <div class="particles" aria-hidden="true"></div>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <!-- ribbon + drop icon -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 21s-6-4.35-6-9a6 6 0 0 1 12 0c0 4.65-6 9-6 9z" fill="#fff" opacity="0.95"/>
+            <path d="M8 6a4 4 0 0 1 8 0" stroke="#000" stroke-opacity="0.15" stroke-width="1"/>
+          </svg>
+        </div>
+        <div>
+          <div style="font-weight:700">InfoHIV & NAPZA</div>
+          <div style="font-size:12px;color:var(--muted)">Edukasi · Pencegahan · Dukungan</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#about">Tentang</a>
+        <a href="#napza">NAPZA</a>
+        <a href="#prevention">Pencegahan</a>
+        <a href="#resources">Sumber</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="card">
+          <span class="ribbon">BACA PENTING</span>
+          <h1>HIV / AIDS & NAPZA — Informasi yang Jelas, Tanpa Stigma</h1>
+          <p class="lead">Situs ini menyediakan ringkasan tentang HIV/AIDS dan penyalahgunaan NAPZA, cara pencegahan, tanda-tanda, dan tempat dukungan. Tujuan: edukasi, pengurangan stigma, dan rujukan layanan.</p>
+
+          <div class="stats">
+            <div class="stat">
+              <h3 id="stat1">—</h3>
+              <p>Populasi tersentuh (perkiraan)</p>
+            </div>
+            <div class="stat">
+              <h3>Info</h3>
+              <p>Rahasia, aman, tanpa stigma</p>
+            </div>
+            <div class="stat">
+              <h3>24/7</h3>
+              <p>Rujukan layanan darurat & hotline</p>
+            </div>
+          </div>
+
+          <div style="margin-top:18px;display:flex;gap:12px">
+            <a href="#prevention" style="background:var(--accent);padding:10px 14px;border-radius:10px;color:#100;text-decoration:none;font-weight:700">Pelajari Pencegahan</a>
+            <a href="#resources" style="border:1px solid rgba(255,255,255,0.06);padding:10px 14px;border-radius:10px;color:var(--muted);text-decoration:none">Sumber & Bantuan</a>
+          </div>
+        </div>
+
+        <aside class="blood-card card" aria-hidden="true">
+          <div class="pulse">
+            <div class="blood" role="img" aria-label="Ikon darah berdenyut">❤<small>HIV</small></div>
+          </div>
+          <div style="position:absolute;left:12px;bottom:12px;color:var(--muted);font-size:12px">Tes rutin & konseling direkomendasikan</div>
+        </aside>
+      </section>
+
+      <section id="about" class="reveal">
+        <div class="card info-card">
+          <h4>Apa itu HIV & AIDS?</h4>
+          <p>HIV (Human Immunodeficiency Virus) menyerang sistem imun; jika tidak diobati bisa berkembang menjadi AIDS. HIV tidak mudah menular melalui kontak sehari-hari — penularan terjadi lewat darah, hubungan seksual tanpa pelindung dengan orang terinfeksi, dan dari ibu ke anak tanpa tindakan pencegahan.</p>
+        </div>
+      </section>
+
+      <section id="napza" class="reveal">
+        <div class="grid">
+          <div class="info-card">
+            <h4>Apa itu NAPZA?</h4>
+            <p>NAPZA = Narkotika, Psikotropika, dan Zat Adiktif lainnya. Penyalahgunaan NAPZA berisiko pada kesehatan fisik & mental, serta meningkatkan kemungkinan perilaku berisiko yang dapat menyebabkan penularan HIV.</p>
+          </div>
+
+          <div class="info-card">
+            <h4>Tanda-tanda penyalahgunaan</h4>
+            <p>Perubahan perilaku, penurunan berat badan drastis, masalah keuangan, penurunan performa kerja/belajar. Jika melihat tanda ini, dukungan medis dan konseling sangat penting.</p>
+          </div>
+
+          <div class="info-card">
+            <h4>Hubungan HIV & NAPZA</h4>
+            <p>Pemakaian jarum suntik bersama meningkatkan risiko HIV. Program pertukaran jarum dan terapi substitusi obat dapat menurunkan risiko.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="prevention" class="reveal">
+        <div class="card grid-2">
+          <div>
+            <h3>Cara Pencegahan</h3>
+            <ul style="color:var(--muted);font-size:14px">
+              <li>Gunakan kondom saat berhubungan seksual.</li>
+              <li>Lakukan tes HIV secara berkala jika berisiko.</li>
+              <li>Jangan berbagi jarum atau peralatan suntik.</li>
+              <li>Jika positif, segera akses ART (antiretroviral therapy) untuk menekan virus.</li>
+              <li>Pendidikan dan dukungan sosial untuk pulih dari NAPZA.</li>
+            </ul>
+
+            <div style="margin-top:14px">
+              <strong>Target edukasi:</strong>
+              <div class="progress" aria-hidden="true" style="margin-top:8px">
+                <i id="prog1"></i>
+              </div>
+            </div>
+          </div>
+
+          <aside class="info-card">
+            <h4>Hotline & Layanan</h4>
+            <p style="color:var(--muted)">Jika kamu butuh bantuan segera, hubungi hotline setempat atau layanan kesehatan terdekat. Di banyak daerah tersedia layanan konseling gratis.</p>
+            <div style="margin-top:12px;display:flex;gap:8px">
+              <button onclick="alert('Hubungi layanan lokalmu.');" style="flex:1;padding:10px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);color:var(--muted)">Dapatkan Bantuan</button>
+              <button onclick="window.location='#resources'" style="padding:10px;border-radius:8px;background:var(--accent);border:none;color:#100">Sumber</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="resources" class="reveal">
+        <div class="card">
+          <h3>Sumber & Rujukan</h3>
+          <p style="color:var(--muted);">Berikut jenis sumber yang berguna: layanan kesehatan setempat, organisasi pencegahan HIV, pusat rehabilitasi NAPZA, serta hotline darurat. (Tambahkan kontak lokal di sini.)</p>
+
+          <div style="display:flex;gap:12px;margin-top:14px;flex-wrap:wrap">
+            <div class="info-card" style="min-width:220px;flex:1">
+              <h4>Organisasi</h4>
+              <p>Nama LSM / Puskesmas / Klinik rujukan. Sertakan alamat & jam operasi.</p>
+            </div>
+            <div class="info-card" style="min-width:220px;flex:1">
+              <h4>Artikel & Edukasi</h4>
+              <p>Link ke artikel informatif, leaflet, dan video edukasi (tambahkan URL aktual jika ingin aktif).</p>
+            </div>
+            <div class="info-card" style="min-width:220px;flex:1">
+              <h4>FAQ</h4>
+              <p>Pertanyaan umum: 'Apakah HIV menular lewat pelukan?' - Tidak. 'Apakah ART aman?' - Ya, terapi terbukti menurunkan beban virus.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <div style="font-size:14px">© <strong>InfoHIV & NAPZA</strong> — Edukasi tanpa stigma</div>
+      <div style="color:var(--muted);font-size:13px">Dibuat oleh Muhammad Arifin Ilham — untuk edukasi masyarakat</div>
+    </footer>
+
+  </div>
+
+  <script>
+    // create floating particles
+    const particles = document.querySelector('.particles');
+    for(let i=0;i<14;i++){
+      const el = document.createElement('div');
+      el.className='particle';
+      const left = Math.random()*100; const size = 6 + Math.random()*18;
+      el.style.left = left + 'vw';
+      el.style.width = size + 'px'; el.style.height = size + 'px';
+      el.style.animationDuration = 12 + Math.random()*12 + 's';
+      el.style.top = (Math.random()*100 - 20) + 'vh';
+      el.style.opacity = (0.4 + Math.random()*0.6).toString();
+      particles.appendChild(el);
+    }
+
+    // reveal on scroll
+    const revealEls = Array.from(document.querySelectorAll('.reveal'));
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('visible');
+        }
+      })
+    },{threshold:0.12});
+    revealEls.forEach(el=>obs.observe(el));
+
+    // animate progress bar and stats
+    window.addEventListener('load',()=>{
+      // animate progress
+      setTimeout(()=>{document.getElementById('prog1').style.width='78%';},300);
+      // fill stat with a rounded number (example static)
+      document.getElementById('stat1').innerText = 'Est. 38M+';
+    })
+
+    // keyboard accessibility for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',e=>{
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if(el){el.scrollIntoView({behavior:'smooth',block:'start'});e.preventDefault();}
+      })
+    })
+  </script>
+</body>
+</html>
